@@ -1,0 +1,109 @@
+1. What do you understand By Database?
+=> A database is a structured collection of data organized in a way that allows efficient storage, retrieval, and management of information.
+Tables: These are the fundamental structures that store the actual data. Tables consist of rows and columns, where each row represents a record, and each column represents a specific attribute or field.
+
+Rows: Each row in a table represents a unique record, and each record contains information related to a specific entity or object.
+
+Columns: Columns define the attributes or properties of the data. Each column in a table is designed to store a specific type of information.
+
+Fields: Fields are the individual data elements within a record. Each field corresponds to a specific column in the table.
+
+Keys: Keys are used to establish relationships between tables. A primary key uniquely identifies each record in a table and foreign keys link records between tables.
+
+2. What is Normalization?
+=> Normalization is a database design technique that helps organize and structure relational databases to reduce data redundancy and improve data integrity. The goal of normalization is to minimize data anomalies and ensure that data is stored efficiently without unnecessary duplication. It involves breaking down large tables into smaller, more manageable tables and establishing relationships between them.
+
+3. What is the Difference between DBMS and RDBMS?
+=> DBMS (Database Management System): It is a software system that enables users to define, create, maintain, and control access to a database. DBMS can be relational or non-relational.
+     
+     RDBMS (Relational Database Management System): It is a specific type of DBMS that manages data in a tabular form with rows and columns. RDBMS uses a relational model that establishes relationships between tables using keys.
+
+4. What is the MF Cod Rule of RDBMS Systems?
+=> It seems there might be a misunderstanding or confusion regarding the term "MF Cod Rule" in the context of RDBMS systems. As of my last knowledge update in January 2022, there is no widely recognized or standard concept called "MF Cod Rule" related to RDBMS.
+
+5. What do you understand By Data Redundancy?
+=> Data redundancy refers to the presence of duplicate or unnecessary data in a database. In other words, it occurs when the same piece of information is stored more than once in the database. Redundancy can lead to several issues in a database system, including increased storage requirements, potential inconsistencies, and difficulties in maintaining data integrity.
+
+6. What is DDL Interpreter?
+=> A DDL (Data Definition Language) interpreter is part of a Database Management System (DBMS) responsible for processing and executing statements that define and manage the structure of a database. DDL statements are used to define and manage database objects such as tables, indexes, views, and constraints.
+
+7. What is a DML Compiler in SQL?
+=> There is no specific entity referred to as a "DML Compiler" in the context of SQL or relational database systems. Instead, the term typically used is "Query Compiler" or "SQL Compiler," which is a component of a Database Management System (DBMS).
+
+8. What are SQL Key Constraints writing an Example of SQL Key Constraints?
+=> In SQL, key constraints are rules applied to columns in a table to enforce the uniqueness and integrity of data. There are different types of key constraints, including Primary Key, Unique Key, and Foreign Key. 
+
+9. What is save Point? How to create a save Point and write a Query?
+=> In The context of databases and transactions, a savepoint is a point within a transaction to which you can roll back if necessary. Savepoints provide a way to set intermediate points during a transaction, allowing you to partially roll back to a specific point without affecting the entire transaction. This can be useful in complex transactions where you want to undo some changes but not the entire transaction.
+
+10. What is a trigger and how to create a Trigger in SQL?
+=> In SQL, a trigger is a set of instructions or a program that is automatically executed ("triggered") in response to certain events on a particular table or view. These events include actions like INSERT, UPDATE, DELETE, and other data-related modifications. Triggers are used to enforce business rules, maintain data integrity, and automate tasks.
+
+
+MySQL trigger examples
+
+
+1-
+
+create table employees(
+  employeeNumber int PRIMARY KEY AUTO_INCREMENT NOT Null,
+  lname varchar(20) NOT null,
+  fname varchar(20) NOT null,
+  email varchar(20) NOT null
+);
+------------------------------------------
+2-
+ 
+insert into employees(fname,lname,email) values ("hitesh","gajeria","h@gmail.com"),
+("jitesh","kajeria","j@gmail.com"),
+("mitesh","dajeria","m@gmail.com"),
+("ritesh","rajeria","r@gmail.com"),
+("nitesh","tajeria","n@gmail.com")
+
+---------------------------------------------
+First, create a new table named employees_audit to keep the changes to the employees table:
+
+CREATE TABLE employees_audit (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    employeeNumber INT NOT NULL,
+    lastname VARCHAR(50) NOT NULL,
+    changedat DATETIME DEFAULT NULL,
+    action VARCHAR(50) DEFAULT NULL
+);
+------------------------------------------------
+Next, create a BEFORE UPDATE trigger that is invoked before a change is made to the 
+employees table.
+
+-
+
+CREATE TRIGGER before_employee_update 
+    BEFORE UPDATE ON employees
+    FOR EACH ROW 
+ INSERT INTO employees_audit
+ SET action = 'update',
+     employeeNumber = OLD.employeeNumber,
+     lastname = OLD.lname,
+     changedat = NOW();
+
+
+Inside the body of the trigger, we used the OLD keyword to access values of the 
+columns employeeNumber and lastname of the row affected by the trigger.
+
+--------------------------------------------------
+
+Then, show all triggers in the current database by using the SHOW TRIGGERS statement:
+
+-
+
+SHOW TRIGGERS;
+
+--------------------------------------------------
+After that, update a row in the employees table:
+
+-
+
+UPDATE employees 
+SET 
+    lname = 'kankaria'
+WHERE
+    employeeNumber = 1;
